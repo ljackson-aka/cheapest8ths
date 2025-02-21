@@ -1,0 +1,82 @@
+/* CheapestEighth.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #0d1117; /* Dark theme */
+  color: #e6edf3; /* Light gray text */
+  min-height: 100vh;
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #58a6ff; /* Robinhood-like blue */
+}
+
+.cardContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card {
+  background: #161b22; /* Darker background for contrast */
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #21262d;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
+  border-color: #58a6ff;
+}
+
+.highThcCard {
+  background: #1f6feb; /* High THC cards pop with a brighter blue */
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 4px 15px rgba(31, 111, 235, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.highThcCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(31, 111, 235, 0.8);
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #58a6ff;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+p {
+  font-size: 0.9rem;
+  color: #b1bac4;
+}
+
+@media (max-width: 768px) {
+  .cardContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+}

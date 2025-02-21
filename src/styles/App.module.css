@@ -1,0 +1,31 @@
+/* App Container */
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #121212; /* Dark theme */
+  color: white;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 20px;
+  background: linear-gradient(90deg, #f39c12, #e74c3c); /* Gold to Red */
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Highlight CHEAP8THS */
+.header span {
+  color: #00ffcc; /* Neon cyan */
+  font-weight: 900;
+}
