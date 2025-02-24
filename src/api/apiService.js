@@ -3,7 +3,7 @@ import axios from 'axios';
 export const fetchCheapest8ths = async () => {
   try {
     console.log("Fetching from API...");
-    const response = await axios.get('https://drtav4h7ai.execute-api.us-east-2.amazonaws.com/prod');
+    const response = await axios.get('https://o8laa2q6gc.execute-api.us-east-2.amazonaws.com/prod/');
     
     console.log("API Full Response:", response.data); // ✅ Debugging step
 
