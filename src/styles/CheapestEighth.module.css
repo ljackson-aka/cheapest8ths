@@ -1,72 +1,106 @@
+/* Global Styling */
 .container {
-  background: #0d1117;
-  color: #e0e0e0;
+  background: #0d0d0d;
+  color: #ffffff;
   min-height: 100vh;
-  padding: 20px;
-  text-align: center;
+  padding: 40px;
+  font-family: 'Inter', sans-serif;
 }
 
+/* Header */
 .header {
+  text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
   text-transform: uppercase;
-  color: #00c2ff;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  color: #00ff99;
+  letter-spacing: 2px;
 }
 
-.cardContainer {
+/* Grid Container - 3 Equal Sections */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Category Section */
+.categorySection {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* Ensures titles are centered above cards */
 }
 
-.categorySection {
-  margin-bottom: 40px;
-  width: 90%;
-  max-width: 1200px;
-}
-
-.categoryHeader {
+/* Category Titles */
+.categoryTitle {
   font-size: 1.8rem;
   font-weight: bold;
-  text-align: center;
-  color: #ffffff;
-  margin-bottom: 10px;
+  color: #00ff99;
+  margin-bottom: 20px;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-  padding-bottom: 10px;
+  text-align: center; /* Keeps text centered */
+  width: 100%;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: #1a1f2b;
-  border-radius: 10px;
+/* Category Box */
+.category {
+  text-align: center;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease-in-out;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.2);
+  min-height: 500px;
+}
+
+/* Card Grid */
+.cardGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Cards */
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 255, 153, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 25px rgba(0, 255, 153, 0.4);
 }
 
-h3 {
-  color: #00c2ff;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+/* Price Styling */
+.price {
+  font-weight: bold;
+  color: #00ff99;
+  font-size: 1.2rem;
 }
 
-p {
-  font-size: 1rem;
-  line-height: 1.5;
+/* No Data Message */
+.noData {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888888;
 }
 
-strong {
-  color: #ffffff;
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
 }
