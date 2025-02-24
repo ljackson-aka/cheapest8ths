@@ -1,31 +1,21 @@
-/* App Container */
+.siteHeader {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1e1e2e, #252542);
+  padding: 20px;
+  border-bottom: 2px solid #3a3a5e;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 .appContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: #121212; /* Dark theme */
-  color: white;
-  font-family: 'Arial', sans-serif;
-}
-
-/* Header */
-.header {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  padding: 20px;
-  background: linear-gradient(90deg, #f39c12, #e74c3c); /* Gold to Red */
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  color: #fff;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* Highlight CHEAP8THS */
-.header span {
-  color: #00ffcc; /* Neon cyan */
-  font-weight: 900;
+  min-height: 100vh;
+  background-color: #121212;
 }

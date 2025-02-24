@@ -1,82 +1,72 @@
-/* CheapestEighth.module.css */
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 20px;
-  background-color: #0d1117; /* Dark theme */
-  color: #e6edf3; /* Light gray text */
+  background: #0d1117;
+  color: #e0e0e0;
   min-height: 100vh;
+  padding: 20px;
+  text-align: center;
 }
 
 .header {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #58a6ff; /* Robinhood-like blue */
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #00c2ff;
+  margin-bottom: 30px;
 }
 
 .cardContainer {
   display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.categorySection {
+  margin-bottom: 40px;
+  width: 90%;
   max-width: 1200px;
 }
 
+.categoryHeader {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
 .card {
-  background: #161b22; /* Darker background for contrast */
-  border-radius: 12px;
+  background: #1a1f2b;
+  border-radius: 10px;
   padding: 20px;
-  width: 300px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid #21262d;
+  transition: transform 0.2s ease-in-out;
 }
 
 .card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
-  border-color: #58a6ff;
-}
-
-.highThcCard {
-  background: #1f6feb; /* High THC cards pop with a brighter blue */
-  color: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  width: 300px;
-  box-shadow: 0 4px 15px rgba(31, 111, 235, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.highThcCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(31, 111, 235, 0.8);
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #58a6ff;
 }
 
 h3 {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
+  color: #00c2ff;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
 p {
-  font-size: 0.9rem;
-  color: #b1bac4;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-@media (max-width: 768px) {
-  .cardContainer {
-    flex-direction: column;
-    align-items: center;
-  }
+strong {
+  color: #ffffff;
 }
