@@ -27,24 +27,6 @@
   margin: 0 auto;
 }
 
-/* Category Section */
-.categorySection {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Ensures titles are centered above cards */
-}
-
-/* Category Titles */
-.categoryTitle {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #00ff99;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  text-align: center; /* Keeps text centered */
-  width: 100%;
-}
-
 /* Category Box */
 .category {
   text-align: center;
@@ -53,6 +35,19 @@
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0px 4px 20px rgba(0, 255, 153, 0.2);
   min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Centered Category Titles */
+.categoryTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #00ff99;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 /* Card Grid */
@@ -61,6 +56,7 @@
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  align-items: center;
 }
 
 /* Cards */
@@ -71,6 +67,12 @@
   border-radius: 12px;
   box-shadow: 0px 4px 15px rgba(0, 255, 153, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .card:hover {
@@ -83,13 +85,6 @@
   font-weight: bold;
   color: #00ff99;
   font-size: 1.2rem;
-}
-
-/* No Data Message */
-.noData {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #888888;
 }
 
 /* Responsive Design */
