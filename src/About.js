@@ -7,7 +7,7 @@ const About = () => {
     <div className="about-container">
       <h1>About CHEAP8THS.COM</h1>
       <p>
-        Cheapest8ths helps cannabis consumers find the best deals by providing real-time price tracking, 
+        CHEAP8THS.COM helps consumers find the best deals by providing real-time price tracking, 
         user-submitted prices, and trend analysis.
       </p>
 
@@ -20,7 +20,7 @@ const About = () => {
 
       <h2>Join Our Community</h2>
       <p>
-        Help improve pricing transparency by submitting updates and competing on the leaderboard.
+        Help improve pricing transparency by submitting updates and competing on the leaderboard coming soon. Accurate report = more rewards!
       </p>
 
       <Link to="/">Go Back to Home</Link>
