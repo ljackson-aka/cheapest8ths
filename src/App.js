@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom"; // Import React Router
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
+import About from "./About"; 
 
 const API_URL = "https://o8laa2q6gc.execute-api.us-east-2.amazonaws.com/prod/";
 
@@ -24,12 +25,7 @@ const App = () => {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-
-        console.log("API Raw Response:", data); // Debugging API response
-
         const parsedBody = JSON.parse(data.body);
-
-        console.log("Parsed Data:", parsedBody); // Debugging parsed data
 
         setStrains({
           cheapestEighth: parsedBody.cheapestEighth || [],
@@ -76,11 +72,12 @@ const App = () => {
   return (
     <Router>
       <div className={`app-container ${theme}`}>
-        {/* Top Navbar */}
+        {/* Navbar */}
         <nav className="navbar">
-          <Link to="#" onClick={(e) => e.preventDefault()}>Sign Up</Link>
-          <Link to="#" onClick={(e) => e.preventDefault()}>Profile</Link>
-          <Link to="#" onClick={(e) => e.preventDefault()}>About</Link>
+          <Link to="/">Home</Link> {/* Home Button Added */}
+          <Link to="#">Sign Up</Link>
+          <Link to="#">Profile</Link>
+          <Link to="/about">About</Link>
         </nav>
 
         {/* Theme Toggle */}
@@ -97,48 +94,58 @@ const App = () => {
         {/* Error Handling */}
         {error && <p className="error-message">Error: {error}</p>}
 
-        {/* Table Sections */}
-        <div className="tables-wrapper">
-          {[
-            { key: "cheapestEighth", title: "Cheapest 8ths" },
-            { key: "cheapestOver25Thc", title: "Over 25% THC" },
-            { key: "cheapestOver30Thc", title: "Over 30% THC" }
-          ].map(({ key, title }) => (
-            <div className="table-container" key={key}>
-              <div className="table-header">{title}</div>
-              <div className="scrollable-content">
-                {loading ? (
-                  <p>Loading...</p>
-                ) : strains[key].length > 0 ? (
-                  <table>
-                    <thead>
-                      <tr>
-                        <th onClick={() => requestSort(key, "brand")}>Brand ⬍</th>
-                        <th onClick={() => requestSort(key, "product_name")}>Product ⬍</th>
-                        <th onClick={() => requestSort(key, "thc")}>THC % ⬍</th>
-                        <th onClick={() => requestSort(key, "price")}>Price ($) ⬍</th>
-                        <th onClick={() => requestSort(key, "dispensary")}>Dispensary ⬍</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedData(key, strains[key]).map((strain, index) => (
-                        <tr key={index}>
-                          <td>{strain.brand}</td>
-                          <td>{strain.product_name}</td>
-                          <td>{strain.thc}%</td>
-                          <td>${strain.price.toFixed(2)}</td>
-                          <td>{strain.dispensary}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p>No data available</p>
-                )}
+        {/* Routing Setup */}
+        <Routes>
+          {/* Home Page */}
+          <Route
+            path="/"
+            element={
+              <div className="tables-wrapper">
+                {[{ key: "cheapestEighth", title: "Cheapest 8ths" },
+                  { key: "cheapestOver25Thc", title: "Over 25% THC" },
+                  { key: "cheapestOver30Thc", title: "Over 30% THC" }
+                ].map(({ key, title }) => (
+                  <div className="table-container" key={key}>
+                    <div className="table-header">{title}</div>
+                    <div className="scrollable-content">
+                      {loading ? (
+                        <p>Loading...</p>
+                      ) : strains[key].length > 0 ? (
+                        <table>
+                          <thead>
+                            <tr>
+                              <th onClick={() => requestSort(key, "brand")}>Brand ⬍</th>
+                              <th onClick={() => requestSort(key, "product_name")}>Product ⬍</th>
+                              <th onClick={() => requestSort(key, "thc")}>THC % ⬍</th>
+                              <th onClick={() => requestSort(key, "price")}>Price ($) ⬍</th>
+                              <th onClick={() => requestSort(key, "dispensary")}>Dispensary ⬍</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sortedData(key, strains[key]).map((strain, index) => (
+                              <tr key={index}>
+                                <td>{strain.brand}</td>
+                                <td>{strain.product_name}</td>
+                                <td>{strain.thc}%</td>
+                                <td>${strain.price.toFixed(2)}</td>
+                                <td>{strain.dispensary}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p>No data available</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
+            }
+          />
+
+          {/* About Page */}
+          <Route path="/about" element={<About />} />
+        </Routes>
       </div>
     </Router>
   );

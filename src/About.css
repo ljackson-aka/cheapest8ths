@@ -1,0 +1,35 @@
+.about-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #1e1e1e;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .about-container h1, .about-container h2 {
+    color: #00b894;
+  }
+  
+  .about-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .about-container li {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .about-container a {
+    color: #00b894;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .about-container a:hover {
+    text-decoration: underline;
+  }
+  
