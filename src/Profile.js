@@ -8,10 +8,17 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const currentUser = await Auth.currentAuthenticatedUser();
-        console.log("Authenticated User:", currentUser); // Debugging
-        setUser(currentUser.attributes);
+        
+        console.log("✅ Full Cognito User Object:", currentUser); // Debug full object
+        console.log("🔥 Username:", currentUser.username || "Not Found");
+        console.log("🔥 Attributes:", currentUser.attributes || "No Attributes Found");
+
+        setUser({
+          username: currentUser.username || "Unknown User",
+          email: currentUser.attributes?.email || "N/A",
+        });
       } catch (err) {
-        console.error("Error fetching user:", err);
+        console.error("❌ Error fetching user:", err);
         setUser(null);
       }
     };
@@ -25,15 +32,14 @@ const Profile = () => {
       setUser(null);
       window.location.href = "/"; // Redirect to home page after logout
     } catch (err) {
-      console.error("Error signing out:", err);
+      console.error("❌ Error signing out:", err);
     }
   };
 
   return user ? (
     <div>
-      <h2>Welcome, {user.email}</h2>
-      <p><strong>Name:</strong> {user.name || "N/A"}</p>
-      <p><strong>Phone:</strong> {user.phone_number || "N/A"}</p>
+      <h2>Welcome, {user.username}</h2> 
+      <p><strong>Email:</strong> {user.email}</p>
       <button onClick={handleSignOut}>Sign Out</button>
     </div>
   ) : (

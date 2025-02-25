@@ -4,6 +4,8 @@ import { Amplify, Auth, Hub } from "aws-amplify";
 import awsExports from "./aws-exports";
 import "./App.css";
 import About from "./About";
+import Profile from "./Profile";
+import SignIn from "./SignIn"; // Sign-in component
 
 Amplify.configure(awsExports);
 
@@ -14,67 +16,45 @@ const App = () => {
   const [strains, setStrains] = useState({
     cheapestEighth: [],
     cheapestOver25Thc: [],
-    cheapestOver30Thc: []
+    cheapestOver30Thc: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // ✅ Now safe to use
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const currentUser = await Auth.currentAuthenticatedUser();
-        console.log("✅ User is authenticated:", currentUser);
         setUser(currentUser);
       } catch (err) {
-        console.log("❌ No user signed in");
         setUser(null);
       }
     };
 
     checkAuth();
 
-    // Listen for Auth events
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      console.log("🔥 AUTH EVENT:", payload.event);
       if (payload.event === "signIn") {
         checkAuth();
-        navigate("/profile"); // Redirect to profile after login
+        navigate("/profile");
       } else if (payload.event === "signOut") {
         setUser(null);
-        navigate("/"); // Redirect to home after logout
+        navigate("/");
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  const handleSignIn = async () => {
-    try {
-      const username = prompt("Enter your username:");
-      const password = prompt("Enter your password:");
-      if (!username || !password) return;
-
-      console.log("🔄 Attempting sign-in...");
-      const signedInUser = await Auth.signIn(username, password);
-      console.log("✅ Sign-in successful:", signedInUser);
-      setUser(signedInUser);
-      navigate("/profile");
-    } catch (error) {
-      console.error("❌ Sign-in error:", error);
-      alert("Sign-in failed: " + error.message);
-    }
-  };
-
   const handleSignOut = async () => {
     try {
       await Auth.signOut();
-      console.log("✅ Signed out successfully");
       setUser(null);
       navigate("/");
     } catch (error) {
-      console.error("❌ Sign-out error:", error);
+      console.error("Sign-out error:", error);
     }
   };
 
@@ -83,7 +63,7 @@ const App = () => {
       try {
         const response = await fetch(API_URL, {
           method: "GET",
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         });
 
         if (!response.ok) throw new Error("Failed to fetch");
@@ -94,10 +74,9 @@ const App = () => {
         setStrains({
           cheapestEighth: parsedBody.cheapestEighth || [],
           cheapestOver25Thc: parsedBody.cheapestOver25Thc || [],
-          cheapestOver30Thc: parsedBody.cheapestOver30Thc || []
+          cheapestOver30Thc: parsedBody.cheapestOver30Thc || [],
         });
       } catch (err) {
-        console.error("Error fetching data:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -111,15 +90,19 @@ const App = () => {
     <div className={`app-container ${theme}`}>
       <nav className="navbar">
         <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
         {user ? (
           <>
             <Link to="/profile">Profile</Link>
-            <button onClick={handleSignOut}>Sign Out</button>
+            <button className="nav-button" onClick={handleSignOut}>
+              Sign Out
+            </button>
           </>
         ) : (
-          <button onClick={handleSignIn}>Sign In</button>
+          <Link to="/signin">
+            <button className="nav-button">Sign In</button>
+          </Link>
         )}
-        <Link to="/about">About</Link>
       </nav>
 
       <div className="theme-toggle">
@@ -137,60 +120,86 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home strains={strains} loading={loading} />} />
         <Route path="/about" element={<About />} />
-        <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/" />} />
+        <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/signin" />} />
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </div>
   );
 };
 
-const Home = ({ strains, loading }) => (
-  <div className="tables-wrapper">
-    {[
-      { key: "cheapestEighth", title: "Cheapest 8ths" },
-      { key: "cheapestOver25Thc", title: "Over 25% THC" },
-      { key: "cheapestOver30Thc", title: "Over 30% THC" }
-    ].map(({ key, title }) => (
-      <div className="table-container" key={key}>
-        <div className="table-header">{title}</div>
-        <div className="scrollable-content">
-          {loading ? (
-            <p>Loading...</p>
-          ) : strains[key].length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Brand</th>
-                  <th>Product</th>
-                  <th>THC %</th>
-                  <th>Price ($)</th>
-                  <th>Dispensary</th>
-                </tr>
-              </thead>
-              <tbody>
-                {strains[key].map((strain, index) => (
-                  <tr key={index}>
-                    <td>{strain.brand}</td>
-                    <td>{strain.product_name}</td>
-                    <td>{strain.thc}%</td>
-                    <td>${strain.price.toFixed(2)}</td>
-                    <td>{strain.dispensary}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>No data available</p>
-          )}
-        </div>
-      </div>
-    ))}
-  </div>
-);
+const Home = ({ strains, loading }) => {
+  return (
+    <div className="tables-wrapper">
+      {[
+        { key: "cheapestEighth", title: "Cheapest 8ths" },
+        { key: "cheapestOver25Thc", title: "Over 25% THC" },
+        { key: "cheapestOver30Thc", title: "Over 30% THC" },
+      ].map(({ key, title }) => (
+        <SortableTable key={key} title={title} data={strains[key]} loading={loading} />
+      ))}
+    </div>
+  );
+};
 
-const Profile = ({ user }) => (
-  <div>
-    <h2>Welcome, {user?.attributes?.email}</h2>
-  </div>
-);
+const SortableTable = ({ title, data, loading }) => {
+  const [sortedData, setSortedData] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: "price", direction: "asc" });
+
+  useEffect(() => {
+    setSortedData([...data]);
+  }, [data]);
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+
+    const sorted = [...data].sort((a, b) => {
+      if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
+      if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    setSortedData(sorted);
+    setSortConfig({ key, direction });
+  };
+
+  return (
+    <div className="table-container">
+      <div className="table-header">{title}</div>
+      <div className="scrollable-content">
+        {loading ? (
+          <p>Loading...</p>
+        ) : sortedData.length > 0 ? (
+          <table>
+            <thead>
+              <tr>
+                <th onClick={() => handleSort("brand")}>Brand</th>
+                <th onClick={() => handleSort("product_name")}>Product</th>
+                <th onClick={() => handleSort("thc")}>THC %</th>
+                <th onClick={() => handleSort("price")}>Price ($)</th>
+                <th onClick={() => handleSort("dispensary")}>Dispensary</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedData.map((strain, index) => (
+                <tr key={index}>
+                  <td>{strain.brand}</td>
+                  <td>{strain.product_name}</td>
+                  <td>{strain.thc}%</td>
+                  <td>${strain.price.toFixed(2)}</td>
+                  <td>{strain.dispensary}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No data available</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default App;

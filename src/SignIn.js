@@ -1,34 +1,33 @@
-import { useState } from "react";
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
-import UserPool from "./CognitoConfig";
+import React, { useState } from "react";
+import { Auth } from "aws-amplify";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-
-    const user = new CognitoUser({ Username: email, Pool: UserPool });
-    const authDetails = new AuthenticationDetails({ Username: email, Password: password });
-
-    user.authenticateUser(authDetails, {
-      onSuccess: (data) => {
-        console.log("Login Success:", data);
-        alert("Login successful!");
-      },
-      onFailure: (err) => {
-        alert(err.message);
-      },
-    });
+    try {
+      await Auth.signIn(email, password);
+      navigate("/profile");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
-    <form onSubmit={handleSignIn}>
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Sign In</button>
-    </form>
+    <div>
+      <h2>Sign In</h2>
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={handleSignIn}>
+        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
   );
 };
 
