@@ -29,3 +29,4 @@ amplify/
 build/
 dist/
 .DS_Store
+aws-exports.js

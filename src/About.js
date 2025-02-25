@@ -20,7 +20,7 @@ const About = () => {
 
       <h2>Join Our Community</h2>
       <p>
-        Help improve pricing transparency by submitting updates and competing on the leaderboard coming soon. Accurate report = more rewards!
+        Help improve pricing transparency by submitting updates and competing on the leaderboard coming soon. Accurate reports = more rewards!
       </p>
 
       <Link to="/">Go Back to Home</Link>
