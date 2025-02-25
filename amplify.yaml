@@ -5,7 +5,9 @@ frontend:
       commands:
         - nvm install 16
         - nvm use 16
+        - corepack enable
         - export NODE_OPTIONS=--openssl-legacy-provider
+        - npm install -g npm@latest # Ensure latest npm version
         - npm ci --cache .npm --prefer-offline
     build:
       commands:
@@ -17,3 +19,4 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
+      - .npm # Cache npm dependencies for faster builds
