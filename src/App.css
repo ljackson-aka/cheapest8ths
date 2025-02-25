@@ -10,7 +10,7 @@
   padding-top: 20px;
 }
 
-/* Navbar - Now moves dynamically with scrolling */
+/* Navbar */
 .navbar {
   display: flex;
   gap: 15px;
@@ -18,8 +18,8 @@
   padding: 10px 20px;
   width: auto;
   justify-content: center;
-  position: relative; /* Allows it to move naturally */
-  margin-bottom: 20px; /* Brings it closer to the tables */
+  position: relative;
+  margin-bottom: 20px;
   border-radius: 8px;
 }
 
@@ -119,4 +119,17 @@ th:hover {
 
 td {
   color: white;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .tables-wrapper {
+    flex-direction: column; /* Stacks tables vertically */
+    align-items: center; /* Centers them */
+  }
+
+  .table-container {
+    min-width: 100%; /* Makes each table take full width */
+    max-width: 100%; /* Ensures proper scaling */
+  }
 }
