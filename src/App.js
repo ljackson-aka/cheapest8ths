@@ -5,7 +5,8 @@ import awsExports from "./aws-exports";
 import "./App.css";
 import About from "./About";
 import Profile from "./Profile";
-import SignIn from "./SignIn"; // Sign-in component
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 Amplify.configure(awsExports);
 
@@ -23,6 +24,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  // Check user authentication state
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -35,19 +37,26 @@ const App = () => {
 
     checkAuth();
 
+    // Listen for auth events
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      if (payload.event === "signIn") {
-        checkAuth();
-        navigate("/profile");
-      } else if (payload.event === "signOut") {
-        setUser(null);
-        navigate("/");
+      switch (payload.event) {
+        case "signIn":
+          checkAuth();
+          navigate("/profile");
+          break;
+        case "signOut":
+          setUser(null);
+          navigate("/");
+          break;
+        default:
+          break;
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
+  // Sign out function
   const handleSignOut = async () => {
     try {
       await Auth.signOut();
@@ -58,6 +67,7 @@ const App = () => {
     }
   };
 
+  // Fetch strain data
   useEffect(() => {
     const fetchStrains = async () => {
       try {
@@ -88,6 +98,7 @@ const App = () => {
 
   return (
     <div className={`app-container ${theme}`}>
+      {/* Navbar */}
       <nav className="navbar">
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
@@ -99,12 +110,18 @@ const App = () => {
             </button>
           </>
         ) : (
-          <Link to="/signin">
-            <button className="nav-button">Sign In</button>
-          </Link>
+          <>
+            <Link to="/signin">
+              <button className="nav-button">Sign In</button>
+            </Link>
+            <Link to="/signup">
+              <button className="nav-button">Sign Up</button>
+            </Link>
+          </>
         )}
       </nav>
 
+      {/* Theme Toggle */}
       <div className="theme-toggle">
         <label>
           Theme:
@@ -117,23 +134,25 @@ const App = () => {
 
       {error && <p className="error-message">Error: {error}</p>}
 
+      {/* Routes */}
       <Routes>
         <Route path="/" element={<Home strains={strains} loading={loading} />} />
         <Route path="/about" element={<About />} />
         <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/signin" />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </div>
   );
 };
 
+// Home Component
 const Home = ({ strains, loading }) => {
   return (
     <div className="tables-wrapper">
-      {[
-        { key: "cheapestEighth", title: "Cheapest 8ths" },
+      {[{ key: "cheapestEighth", title: "Cheapest 8ths" },
         { key: "cheapestOver25Thc", title: "Over 25% THC" },
-        { key: "cheapestOver30Thc", title: "Over 30% THC" },
+        { key: "cheapestOver30Thc", title: "Over 30% THC" }
       ].map(({ key, title }) => (
         <SortableTable key={key} title={title} data={strains[key]} loading={loading} />
       ))}
@@ -141,6 +160,7 @@ const Home = ({ strains, loading }) => {
   );
 };
 
+// Sortable Table Component
 const SortableTable = ({ title, data, loading }) => {
   const [sortedData, setSortedData] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: "price", direction: "asc" });
