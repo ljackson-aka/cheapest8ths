@@ -7,6 +7,8 @@ import About from "./About";
 import Profile from "./Profile";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import SubmitForm from "./components/SubmitForm"; // Submit Form Page
+import AdminDashboard from "./AdminDashboard"; // Import Admin Dashboard
 
 Amplify.configure(awsExports);
 
@@ -24,12 +26,16 @@ const App = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Check user authentication state
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const currentUser = await Auth.currentAuthenticatedUser();
-        setUser(currentUser);
+        const userGroups =
+          currentUser.signInUserSession.accessToken.payload["cognito:groups"] ||
+          [];
+        const isAdmin = userGroups.includes("admin");
+
+        setUser({ ...currentUser, isAdmin });
       } catch (err) {
         setUser(null);
       }
@@ -37,26 +43,19 @@ const App = () => {
 
     checkAuth();
 
-    // Listen for auth events
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      switch (payload.event) {
-        case "signIn":
-          checkAuth();
-          navigate("/profile");
-          break;
-        case "signOut":
-          setUser(null);
-          navigate("/");
-          break;
-        default:
-          break;
+      if (payload.event === "signIn") {
+        checkAuth();
+        navigate("/profile");
+      } else if (payload.event === "signOut") {
+        setUser(null);
+        navigate("/");
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  // Sign out function
   const handleSignOut = async () => {
     try {
       await Auth.signOut();
@@ -67,7 +66,6 @@ const App = () => {
     }
   };
 
-  // Fetch strain data
   useEffect(() => {
     const fetchStrains = async () => {
       try {
@@ -102,9 +100,11 @@ const App = () => {
       <nav className="navbar">
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
+        <Link to="/submit">Submit a Strain</Link>
         {user ? (
           <>
             <Link to="/profile">Profile</Link>
+            {user.isAdmin && <Link to="/admin">Admin Dashboard</Link>} {/* Admin Link */}
             <button className="nav-button" onClick={handleSignOut}>
               Sign Out
             </button>
@@ -138,9 +138,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home strains={strains} loading={loading} />} />
         <Route path="/about" element={<About />} />
+        <Route path="/submit" element={<SubmitForm />} />
         <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/signin" />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/admin" element={user?.isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
       </Routes>
     </div>
   );
