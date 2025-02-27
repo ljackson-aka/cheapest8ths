@@ -8,18 +8,20 @@ const Profile = () => {
     approved: 0,
     denied: 0,
   });
+  const [rank, setRank] = useState("Unranked");
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const currentUser = await Auth.currentAuthenticatedUser();
-        console.log("✅ Full Cognito User Object:", currentUser); // Debug full object
+        console.log("✅ Full Cognito User Object:", currentUser);
 
         const username = currentUser.username || "Unknown User";
         setUser({ username, email: currentUser.attributes?.email || "N/A" });
 
-        // Once we have the username, fetch their submission stats
+        // Fetch submission stats and leaderboard rank
         fetchSubmissionStats(username);
+        fetchLeaderboardRank(username);
       } catch (err) {
         console.error("❌ Error fetching user:", err);
         setUser(null);
@@ -35,7 +37,7 @@ const Profile = () => {
         if (!response.ok) throw new Error("Failed to fetch submission stats");
 
         const data = await response.json();
-        console.log("📊 Submission Stats:", data); // Debug response
+        console.log("📊 Submission Stats:", data);
 
         setSubmissionStats({
           total: data.total_submissions || 0,
@@ -44,6 +46,46 @@ const Profile = () => {
         });
       } catch (err) {
         console.error("❌ Error fetching submission stats:", err);
+      }
+    };
+
+    const fetchLeaderboardRank = async (username) => {
+      try {
+        const response = await fetch(
+          "https://o8laa2q6gc.execute-api.us-east-2.amazonaws.com/prod/leaderboard"
+        );
+
+        if (!response.ok) throw new Error("Failed to fetch leaderboard");
+
+        const data = await response.json();
+        console.log("🏆 Raw API Response:", JSON.stringify(data, null, 2));
+
+        let leaderboardData;
+        if (typeof data.body === "string") {
+          leaderboardData = JSON.parse(data.body).leaderboard;
+        } else if (data.leaderboard) {
+          leaderboardData = data.leaderboard;
+        } else {
+          console.error("❌ Unexpected leaderboard format:", data);
+          setRank("Unranked");
+          return;
+        }
+
+        console.log("🏆 Parsed Leaderboard Data:", leaderboardData);
+
+        const userEntry = leaderboardData.find(
+          (entry) => entry.username.toLowerCase() === username.toLowerCase()
+        );
+
+        if (userEntry) {
+          setRank(userEntry.rank);
+        } else {
+          console.warn("⚠️ User not found in leaderboard:", username);
+          setRank("Unranked");
+        }
+      } catch (err) {
+        console.error("❌ Error fetching leaderboard:", err);
+        setRank("Unranked");
       }
     };
 
@@ -70,6 +112,10 @@ const Profile = () => {
       <p><strong>Total Submissions:</strong> {submissionStats.total}</p>
       <p><strong>Approved:</strong> ✅ {submissionStats.approved}</p>
       <p><strong>Denied:</strong> ❌ {submissionStats.denied}</p>
+
+      {/* Display Rank */}
+      <h3>🏆 Leaderboard Rank:</h3>
+      <p><strong>Rank:</strong> {rank}</p>
 
       <button onClick={handleSignOut}>Sign Out</button>
     </div>

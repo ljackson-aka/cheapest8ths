@@ -9,6 +9,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import SubmitForm from "./components/SubmitForm"; // Submit Form Page
 import AdminDashboard from "./AdminDashboard"; // Import Admin Dashboard
+import Leaderboard from "./Leaderboard"; // Import Leaderboard
 
 Amplify.configure(awsExports);
 
@@ -101,10 +102,11 @@ const App = () => {
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/submit">Submit a Strain</Link>
+        <Link to="/leaderboard">Leaderboard</Link> {/* Leaderboard Link */}
         {user ? (
           <>
             <Link to="/profile">Profile</Link>
-            {user.isAdmin && <Link to="/admin">Admin Dashboard</Link>} {/* Admin Link */}
+            {user.isAdmin && <Link to="/admin">Admin Dashboard</Link>}
             <button className="nav-button" onClick={handleSignOut}>
               Sign Out
             </button>
@@ -139,6 +141,7 @@ const App = () => {
         <Route path="/" element={<Home strains={strains} loading={loading} />} />
         <Route path="/about" element={<About />} />
         <Route path="/submit" element={<SubmitForm />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/signin" />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

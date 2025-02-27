@@ -10,17 +10,33 @@
   padding-top: 20px;
 }
 
+/* 🌙 Dark & ☀️ Light Mode */
+.dark {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.light {
+  background-color: #f5f5f5;
+  color: black;
+}
+
 /* Navbar */
 .navbar {
   display: flex;
   gap: 15px;
   background: #1e1e1e;
   padding: 10px 20px;
-  width: auto;
+  width: 100%; /* Adjusted to fit full screen */
   justify-content: center;
   position: relative;
   margin-bottom: 20px;
   border-radius: 8px;
+}
+
+/* Light Mode Navbar */
+.light .navbar {
+  background: #ddd;
 }
 
 /* Navbar Links & Buttons */
@@ -41,6 +57,12 @@
   justify-content: center;
 }
 
+/* Light Mode Navbar Buttons */
+.light .navbar a,
+.light .navbar button {
+  color: black;
+}
+
 /* Button-Specific Fix */
 .navbar button {
   background-color: transparent;
@@ -53,6 +75,29 @@
 .navbar button:hover {
   background-color: #00b894;
   color: black;
+}
+
+/* Light Mode Hover */
+.light .navbar a:hover,
+.light .navbar button:hover {
+  background-color: #1abc9c;
+  color: black;
+}
+
+/* Mobile-Friendly Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .navbar a,
+  .navbar button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
 }
 
 /* Tables Wrapper */
@@ -75,6 +120,12 @@
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure Dark Mode Applies Correctly */
+.dark .table-container {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
 }
 
 .light .table-container {
@@ -139,12 +190,12 @@ th:hover {
   color: black;
 }
 
-.light td {
-  color: black;
-}
-
 td {
   color: white;
+}
+
+.light td {
+  color: black;
 }
 
 /* Authentication Forms (Sign In & Sign Up) */
@@ -161,6 +212,16 @@ td {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Ensure Dark Mode Applies to Auth Forms */
+.dark .auth-container {
+  background: #1e1e1e;
+}
+
+.light .auth-container {
+  background: #f5f5f5;
+}
+
+/* Auth Form */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -174,6 +235,10 @@ td {
   text-align: center;
 }
 
+.light .auth-form h2 {
+  color: black;
+}
+
 .auth-form input {
   padding: 12px;
   border: 1px solid #444;
@@ -181,6 +246,12 @@ td {
   background: #2c2c2c;
   color: white;
   font-size: 16px;
+}
+
+.light .auth-form input {
+  background: white;
+  color: black;
+  border: 1px solid #ddd;
 }
 
 .auth-form button {
